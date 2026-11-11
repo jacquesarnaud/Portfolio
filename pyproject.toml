@@ -3,6 +3,7 @@ name = "python-ia"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+entrypoint = "app:app"
 authors = [
     { name = "jacquesarnaud", email = "jaarnaud4@gmail.com" }
 ]
