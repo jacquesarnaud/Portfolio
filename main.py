@@ -9,4 +9,3 @@ if __name__ == "__main__":
     nombre2 = 2
     resultat = division(nombre1, nombre2)
     print(f"{nombre1} / {nombre2} = {resultat}")
-

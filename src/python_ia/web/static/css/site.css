@@ -1,0 +1,20 @@
+:root {
+  --portfolio-bg: #07111f;
+  --portfolio-surface: #0d1b2e;
+  --portfolio-border: rgba(148, 163, 184, .16);
+  --portfolio-blue: #38bdf8;
+}
+
+body { background: var(--portfolio-bg); color: #e2e8f0; }
+.navbar, footer { background: rgba(7, 17, 31, .92); }
+.navbar-brand, .nav-link, a { color: #bae6fd; }
+.nav-link:hover, a:hover { color: white; }
+.hero { padding: 8rem 0 6rem; background: radial-gradient(circle at 75% 25%, #123b62 0, transparent 38%); }
+.hero h1 { font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 800; letter-spacing: -.05em; }
+.text-blue { color: var(--portfolio-blue); }
+.card, .form-control, .form-select { background: var(--portfolio-surface); border-color: var(--portfolio-border); color: #e2e8f0; }
+.form-control::placeholder { color: #64748b; }
+.project-card { height: 100%; transition: transform .2s, border-color .2s; }
+.project-card:hover { transform: translateY(-4px); border-color: var(--portfolio-blue); }
+.badge-tech { background: #123b62; color: #bae6fd; }
+.section-space { padding: 5rem 0; }
