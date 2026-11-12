@@ -29,9 +29,12 @@ from python_ia.schemas.crud import (
 )
 
 
-async def find_profile(session: AsyncSession) -> Profile | None:
+async def find_profile(session: AsyncSession, published_only: bool = False) -> Profile | None:
     """Recherche le profil unique du portfolio."""
-    return await session.get(Profile, 1)
+    profile = await session.get(Profile, 1)
+    if published_only and profile is not None and not profile.is_published:
+        return None
+    return profile
 
 
 async def save_profile(session: AsyncSession, payload: ProfileUpdate) -> Profile:
@@ -48,9 +51,12 @@ async def save_profile(session: AsyncSession, payload: ProfileUpdate) -> Profile
     return profile
 
 
-async def list_skills(session: AsyncSession) -> list[Skill]:
+async def list_skills(session: AsyncSession, published_only: bool = False) -> list[Skill]:
     """Retourne les compétences dans leur ordre d'affichage."""
-    return list((await session.exec(select(Skill).order_by(Skill.display_order, Skill.name))).all())
+    query = select(Skill)
+    if published_only:
+        query = query.where(Skill.is_published)
+    return list((await session.exec(query.order_by(Skill.display_order, Skill.name))).all())
 
 
 async def create_skill(session: AsyncSession, payload: SkillCreate) -> Skill:
@@ -77,9 +83,12 @@ async def delete_item(session: AsyncSession, item: object) -> None:
     await session.commit()
 
 
-async def list_projects(session: AsyncSession) -> list[Project]:
+async def list_projects(session: AsyncSession, published_only: bool = False) -> list[Project]:
     """Retourne les projets triés pour le portfolio."""
-    return list((await session.exec(select(Project).order_by(Project.display_order, Project.created_at.desc()))).all())
+    query = select(Project)
+    if published_only:
+        query = query.where(Project.is_published)
+    return list((await session.exec(query.order_by(Project.display_order, Project.created_at.desc()))).all())
 
 
 async def create_project(session: AsyncSession, payload: ProjectCreate) -> Project:
@@ -110,9 +119,12 @@ async def add_project_image(session: AsyncSession, project_id: int, payload: Pro
     return item
 
 
-async def list_experiences(session: AsyncSession) -> list[Experience]:
+async def list_experiences(session: AsyncSession, published_only: bool = False) -> list[Experience]:
     """Retourne les expériences triées par date et ordre d'affichage."""
-    return list((await session.exec(select(Experience).order_by(Experience.display_order, Experience.start_date.desc()))).all())
+    query = select(Experience)
+    if published_only:
+        query = query.where(Experience.is_published)
+    return list((await session.exec(query.order_by(Experience.display_order, Experience.start_date.desc()))).all())
 
 
 async def create_experience(session: AsyncSession, payload: ExperienceCreate) -> Experience:
@@ -133,9 +145,12 @@ async def update_experience(session: AsyncSession, item: Experience, payload: Ex
     return item
 
 
-async def list_educations(session: AsyncSession) -> list[Education]:
+async def list_educations(session: AsyncSession, published_only: bool = False) -> list[Education]:
     """Retourne les formations et certifications."""
-    return list((await session.exec(select(Education).order_by(Education.display_order, Education.end_date.desc()))).all())
+    query = select(Education)
+    if published_only:
+        query = query.where(Education.is_published)
+    return list((await session.exec(query.order_by(Education.display_order, Education.end_date.desc()))).all())
 
 
 async def create_education(session: AsyncSession, payload: EducationCreate) -> Education:

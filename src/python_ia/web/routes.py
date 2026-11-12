@@ -22,14 +22,14 @@ async def home(request: Request, session: DbSession):
     return templates.TemplateResponse(
         request,
         "home.html",
-        {"profile": await portfolio.find_profile(session), "projects": await portfolio.list_projects(session), "skills": await portfolio.list_skills(session), "experiences": await portfolio.list_experiences(session)},
+        {"profile": await portfolio.find_profile(session, published_only=True), "projects": await portfolio.list_projects(session, published_only=True), "skills": await portfolio.list_skills(session, published_only=True), "experiences": await portfolio.list_experiences(session, published_only=True)},
     )
 
 
 @router.get("/projets", response_class=HTMLResponse)
 async def projects(request: Request, session: DbSession):
     """Affiche la liste publique des projets."""
-    return templates.TemplateResponse(request, "projects.html", {"projects": await portfolio.list_projects(session)})
+    return templates.TemplateResponse(request, "projects.html", {"projects": await portfolio.list_projects(session, published_only=True)})
 
 
 @router.get("/projets/{slug}", response_class=HTMLResponse)
@@ -43,22 +43,22 @@ async def project_detail(slug: str, request: Request, session: DbSession):
 
 @router.get("/a-propos", response_class=HTMLResponse)
 async def about(request: Request, session: DbSession):
-    return templates.TemplateResponse(request, "about.html", {"profile": await portfolio.find_profile(session)})
+    return templates.TemplateResponse(request, "about.html", {"profile": await portfolio.find_profile(session, published_only=True)})
 
 
 @router.get("/competences", response_class=HTMLResponse)
 async def skills(request: Request, session: DbSession):
-    return templates.TemplateResponse(request, "skills.html", {"skills": await portfolio.list_skills(session)})
+    return templates.TemplateResponse(request, "skills.html", {"skills": await portfolio.list_skills(session, published_only=True)})
 
 
 @router.get("/experiences", response_class=HTMLResponse)
 async def experiences(request: Request, session: DbSession):
-    return templates.TemplateResponse(request, "experiences.html", {"experiences": await portfolio.list_experiences(session)})
+    return templates.TemplateResponse(request, "experiences.html", {"experiences": await portfolio.list_experiences(session, published_only=True)})
 
 
 @router.get("/formations", response_class=HTMLResponse)
 async def education(request: Request, session: DbSession):
-    return templates.TemplateResponse(request, "education.html", {"educations": await portfolio.list_educations(session)})
+    return templates.TemplateResponse(request, "education.html", {"educations": await portfolio.list_educations(session, published_only=True)})
 
 
 @router.get("/contact", response_class=HTMLResponse)

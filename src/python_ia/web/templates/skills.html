@@ -1,2 +1,47 @@
 {% extends "base.html" %}{% block title %}Compétences — Portfolio{% endblock %}
-{% block content %}<main class="container section-space"><p class="text-blue">EXPERTISE</p><h1>Compétences</h1><div class="row g-4 mt-4">{% for skill in skills %}<div class="col-sm-6 col-lg-4"><article class="card p-4 h-100"><h2 class="h5">{{ skill.name }}</h2><p class="text-secondary mb-0">{{ skill.category or 'Technologie' }}</p></article></div>{% else %}<p class="text-secondary">Les compétences seront bientôt disponibles.</p>{% endfor %}</div></main>{% endblock %}
+{% block content %}
+<main class="container section-space">
+  <p class="text-blue">EXPERTISE</p>
+  <h1>Compétences Python & Web</h1>
+  <p class="lead text-secondary col-lg-8 mt-3">
+    Un profil back-end orienté applications web, avec Django pour les projets
+    complets et FastAPI pour les APIs modernes.
+  </p>
+  {% set icon_map = {
+    'python': 'devicon-python-plain colored',
+    'django': 'devicon-django-plain colored',
+    'fastapi': 'devicon-fastapi-plain colored',
+    'html': 'devicon-html5-plain colored',
+    'html5': 'devicon-html5-plain colored',
+    'css': 'devicon-css3-plain colored',
+    'css3': 'devicon-css3-plain colored',
+    'javascript': 'devicon-javascript-plain colored',
+    'js': 'devicon-javascript-plain colored',
+    'bootstrap': 'devicon-bootstrap-plain colored',
+    'git': 'devicon-git-plain colored',
+    'github': 'devicon-github-original',
+    'postgresql': 'devicon-postgresql-plain colored',
+    'postgres': 'devicon-postgresql-plain colored',
+    'sqlite': 'devicon-sqlite-plain colored',
+    'docker': 'devicon-docker-plain colored',
+    'linux': 'devicon-linux-plain colored',
+    'java': 'devicon-java-plain colored',
+    'typescript': 'devicon-typescript-plain colored',
+    'react': 'devicon-react-original colored',
+    'vue': 'devicon-vuejs-plain colored'
+  } %}
+  <div class="row g-4 mt-4">
+    {% for skill in skills %}
+    <div class="col-sm-6 col-lg-4">
+      <article class="card skill-card p-4 h-100">
+        <i class="skill-icon {{ icon_map.get(skill.name|lower|trim, 'devicon-code-plain') }}" aria-hidden="true"></i>
+        <h2 class="h5 mt-3">{{ skill.name }}</h2>
+        <p class="text-secondary mb-0">{{ skill.category or 'Technologie' }}</p>
+      </article>
+    </div>
+    {% else %}
+    <p class="text-secondary">Les compétences seront bientôt disponibles.</p>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

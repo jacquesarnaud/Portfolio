@@ -1,4 +1,117 @@
 {% extends "base.html" %}
 {% block title %}Administration — Portfolio{% endblock %}
-{% block content %}<main id="admin-dashboard" class="container section-space"><div class="d-flex justify-content-between align-items-center mb-5"><div><p class="text-blue">ESPACE PRIVÉ</p><h1>Dashboard</h1></div><button id="logout" class="btn btn-outline-light">Déconnexion</button></div><div class="row g-3 mb-5">{% for label, value in [('Projets', stats.projects), ('Compétences', stats.skills), ('Expériences', stats.experiences), ('Formations', stats.educations), ('Messages', stats.messages), ('Non lus', stats.unread)] %}<div class="col-6 col-lg-2"><div class="card p-3 h-100"><p class="small text-secondary mb-1">{{ label }}</p><strong class="fs-3">{{ value }}</strong></div></div>{% endfor %}</div><div class="row g-4"><section class="col-lg-5"><div class="card p-4"><h2 class="h4">Ajouter un projet</h2><form id="project-form"><input class="form-control mb-3" name="title" placeholder="Titre" required><input class="form-control mb-3" name="slug" placeholder="slug" required><input class="form-control mb-3" name="short_description" placeholder="Résumé"><textarea class="form-control mb-3" name="description" placeholder="Description" rows="4"></textarea><input class="form-control mb-3" name="technologies" placeholder="FastAPI, SQLModel"><button class="btn btn-info">Ajouter</button></form></div></section><section class="col-lg-7"><div class="card p-4 mb-4"><h2 class="h4">Projets existants</h2><div id="projects-list" class="list-group list-group-flush"></div></div><div class="card p-4"><h2 class="h4">Compétences</h2><div id="skills-list"></div></div></section></div></main>{% endblock %}
+{% block content %}
+<main id="admin-dashboard" class="container section-space">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <p class="text-blue">ESPACE PRIVÉ</p>
+      <h1>Gestion du portfolio</h1>
+      <p class="text-secondary mb-0">Les informations publiées ici apparaissent sur le site public.</p>
+    </div>
+    <button id="logout" class="btn btn-outline-light">Déconnexion</button>
+  </div>
+
+  <div id="admin-alert" class="alert d-none" role="alert"></div>
+
+  <div class="row g-3 mb-5">
+    {% for label, value in [('Projets', stats.projects), ('Compétences', stats.skills), ('Expériences', stats.experiences), ('Formations', stats.educations), ('Messages', stats.messages), ('Non lus', stats.unread)] %}
+    <div class="col-6 col-lg-2"><div class="card p-3 h-100"><p class="small text-secondary mb-1">{{ label }}</p><strong class="fs-3">{{ value }}</strong></div></div>
+    {% endfor %}
+  </div>
+
+  <section class="card p-4 mb-4">
+    <div class="admin-section-title"><div><p class="text-blue mb-1">INFORMATIONS PUBLIQUES</p><h2 class="h4">Mon profil</h2></div><span class="text-secondary small">Visible sur l’accueil et la page À propos</span></div>
+    <form id="profile-form" class="row g-3">
+      <div class="col-md-6"><label class="form-label">Nom complet</label><input class="form-control" name="full_name" required /></div>
+      <div class="col-md-6"><label class="form-label">Titre professionnel</label><input class="form-control" name="headline" placeholder="Développeur Python & Web" required /></div>
+      <div class="col-12"><label class="form-label">Biographie</label><textarea class="form-control" name="biography" rows="4" required></textarea></div>
+      <div class="col-md-4"><label class="form-label">Email</label><input class="form-control" type="email" name="email" /></div>
+      <div class="col-md-4"><label class="form-label">Téléphone</label><input class="form-control" name="phone" /></div>
+      <div class="col-md-4"><label class="form-label">Localisation</label><input class="form-control" name="location" /></div>
+      <div class="col-md-6"><label class="form-label">Photo / avatar URL</label><input class="form-control" name="avatar_url" type="url" /></div>
+      <div class="col-md-6"><label class="form-label">CV URL</label><input class="form-control" name="cv_url" type="url" /></div>
+      <div class="col-md-4"><label class="form-label">GitHub URL</label><input class="form-control" name="github_url" type="url" /></div>
+      <div class="col-md-4"><label class="form-label">LinkedIn URL</label><input class="form-control" name="linkedin_url" type="url" /></div>
+      <div class="col-md-4"><label class="form-label">Site personnel</label><input class="form-control" name="website_url" type="url" /></div>
+      <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_published" checked /> <span class="form-check-label">Afficher mon profil sur le site public</span></label></div>
+      <div class="col-12"><button class="btn btn-info">Enregistrer le profil</button></div>
+    </form>
+  </section>
+
+  <div class="row g-4">
+    <section class="col-lg-7">
+      <div class="card p-4 mb-4">
+        <h2 class="h4">Ajouter un projet</h2>
+        <form id="project-form" class="row g-3">
+          <div class="col-md-8"><label class="form-label">Titre</label><input class="form-control" name="title" required /></div>
+          <div class="col-md-4"><label class="form-label">Slug</label><input class="form-control" name="slug" placeholder="mon-projet" required /></div>
+          <div class="col-12"><label class="form-label">Résumé</label><input class="form-control" name="short_description" /></div>
+          <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="4"></textarea></div>
+          <div class="col-12"><label class="form-label">Technologies</label><input class="form-control" name="technologies" placeholder="Python, Django, FastAPI, SQL" /></div>
+          <div class="col-md-6"><label class="form-label">Image de couverture URL</label><input class="form-control" name="cover_image_url" type="url" /></div>
+          <div class="col-md-6"><label class="form-label">Démonstration URL</label><input class="form-control" name="live_url" type="url" /></div>
+          <div class="col-md-6"><label class="form-label">Dépôt GitHub URL</label><input class="form-control" name="repository_url" type="url" /></div>
+          <div class="col-md-3"><label class="form-label">Ordre</label><input class="form-control" name="display_order" type="number" value="0" /></div>
+          <div class="col-md-3 d-flex align-items-end"><label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="is_featured" /> <span class="form-check-label">À la une</span></label></div>
+          <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_published" checked /> <span class="form-check-label">Publier ce projet</span></label></div>
+          <div class="col-12"><button class="btn btn-info">Ajouter le projet</button></div>
+        </form>
+      </div>
+      <div class="card p-4"><h2 class="h4">Projets existants</h2><div id="projects-list" class="admin-list"></div></div>
+    </section>
+
+    <section class="col-lg-5">
+      <div class="card p-4 mb-4">
+        <h2 class="h4">Ajouter une compétence</h2>
+        <form id="skill-form" class="row g-3">
+          <div class="col-md-7"><label class="form-label">Nom</label><input class="form-control" name="name" placeholder="Django" required /></div>
+          <div class="col-md-5"><label class="form-label">Catégorie</label><input class="form-control" name="category" placeholder="Back-end" /></div>
+          <div class="col-md-6"><label class="form-label">Niveau (%)</label><input class="form-control" name="proficiency" type="number" min="0" max="100" /></div>
+          <div class="col-md-6"><label class="form-label">Ordre</label><input class="form-control" name="display_order" type="number" value="0" /></div>
+          <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_published" checked /> <span class="form-check-label">Afficher publiquement</span></label></div>
+          <div class="col-12"><button class="btn btn-info">Ajouter la compétence</button></div>
+        </form>
+      </div>
+      <div class="card p-4"><h2 class="h4">Compétences existantes</h2><div id="skills-list" class="admin-list"></div></div>
+    </section>
+
+    <section class="col-lg-6">
+      <div class="card p-4 mb-4">
+        <h2 class="h4">Ajouter une formation</h2>
+        <form id="education-form" class="row g-3">
+          <div class="col-md-6"><label class="form-label">Établissement</label><input class="form-control" name="institution" required /></div>
+          <div class="col-md-6"><label class="form-label">Diplôme / formation</label><input class="form-control" name="title" required /></div>
+          <div class="col-md-6"><label class="form-label">Date de début</label><input class="form-control" name="start_date" type="date" /></div>
+          <div class="col-md-6"><label class="form-label">Date de fin</label><input class="form-control" name="end_date" type="date" /></div>
+          <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="3"></textarea></div>
+          <div class="col-md-8"><label class="form-label">Lien diplôme / certification</label><input class="form-control" name="credential_url" type="url" /></div>
+          <div class="col-md-4"><label class="form-label">Ordre</label><input class="form-control" name="display_order" type="number" value="0" /></div>
+          <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_certification" /> <span class="form-check-label">Certification</span></label></div>
+          <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_published" checked /> <span class="form-check-label">Afficher publiquement</span></label></div>
+          <div class="col-12"><button class="btn btn-info">Ajouter la formation</button></div>
+        </form>
+      </div>
+      <div class="card p-4"><h2 class="h4">Formations existantes</h2><div id="educations-list" class="admin-list"></div></div>
+    </section>
+
+    <section class="col-lg-6">
+      <div class="card p-4 mb-4">
+        <h2 class="h4">Ajouter une expérience</h2>
+        <form id="experience-form" class="row g-3">
+          <div class="col-md-6"><label class="form-label">Entreprise</label><input class="form-control" name="company" required /></div>
+          <div class="col-md-6"><label class="form-label">Poste</label><input class="form-control" name="position" required /></div>
+          <div class="col-md-6"><label class="form-label">Lieu</label><input class="form-control" name="location" /></div>
+          <div class="col-md-6"><label class="form-label">Début</label><input class="form-control" name="start_date" type="date" required /></div>
+          <div class="col-md-6"><label class="form-label">Fin</label><input class="form-control" name="end_date" type="date" /></div>
+          <div class="col-md-6 d-flex align-items-end"><label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="is_current" /> <span class="form-check-label">Poste actuel</span></label></div>
+          <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="3"></textarea></div>
+          <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" name="is_published" checked /> <span class="form-check-label">Afficher publiquement</span></label></div>
+          <div class="col-12"><button class="btn btn-info">Ajouter l’expérience</button></div>
+        </form>
+      </div>
+      <div class="card p-4"><h2 class="h4">Expériences existantes</h2><div id="experiences-list" class="admin-list"></div></div>
+    </section>
+  </div>
+</main>
+{% endblock %}
 {% block scripts %}<script src="{{ url_for('static', path='js/admin.js') }}"></script>{% endblock %}

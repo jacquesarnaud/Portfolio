@@ -1,2 +1,36 @@
-{% extends "base.html" %}{% block title %}{{ project.title }} — Portfolio{% endblock %}
-{% block content %}<main class="container section-space"><a href="/projets">← Tous les projets</a><p class="text-blue mt-5">PROJET</p><h1>{{ project.title }}</h1><p class="lead text-secondary">{{ project.short_description }}</p>{% if project.cover_image_url %}<img src="{{ project.cover_image_url }}" class="img-fluid rounded my-4" alt="{{ project.title }}">{% endif %}<div class="row mt-4"><div class="col-lg-8"><p class="text-secondary">{{ project.description }}</p></div><div class="col-lg-4"><p class="text-blue">TECHNOLOGIES</p><p>{{ project.technologies }}</p>{% if project.repository_url %}<a class="btn btn-outline-info me-2" href="{{ project.repository_url }}" target="_blank" rel="noreferrer">GitHub</a>{% endif %}{% if project.live_url %}<a class="btn btn-info" href="{{ project.live_url }}" target="_blank" rel="noreferrer">Démonstration</a>{% endif %}</div></div></main>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ project.title }} — Portfolio{%
+endblock %} {% block content %}
+<main class="container section-space">
+  <a href="/projets">← Tous les projets</a>
+  <p class="text-blue mt-5">PROJET</p>
+  <h1>{{ project.title }}</h1>
+  <p class="lead text-secondary">{{ project.short_description }}</p>
+  <img
+    src="{{ project.cover_image_url or url_for('static', path='images/project1.jpg') }}"
+    class="img-fluid rounded my-4"
+    alt="{{ project.title }}"
+  />
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      <p class="text-secondary">{{ project.description }}</p>
+    </div>
+    <div class="col-lg-4">
+      <p class="text-blue">TECHNOLOGIES</p>
+      <p>{{ project.technologies }}</p>
+      {% if project.repository_url %}<a
+        class="btn btn-outline-info me-2"
+        href="{{ project.repository_url }}"
+        target="_blank"
+        rel="noreferrer"
+        >GitHub</a
+      >{% endif %}{% if project.live_url %}<a
+        class="btn btn-info"
+        href="{{ project.live_url }}"
+        target="_blank"
+        rel="noreferrer"
+        >Démonstration</a
+      >{% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}

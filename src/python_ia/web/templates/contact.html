@@ -1,2 +1,36 @@
-{% extends "base.html" %}{% block title %}Contact — Portfolio{% endblock %}
-{% block content %}<main class="container section-space" style="max-width:760px"><p class="text-blue">CONTACT</p><h1>Échangeons sur votre projet</h1>{% if sent %}<div class="alert alert-success mt-4">Votre message a bien été envoyé. Merci !</div>{% endif %}<form method="post" class="card p-4 mt-4"><label class="form-label">Nom<input class="form-control" name="sender_name" required minlength="2"></label><label class="form-label">E-mail<input class="form-control" type="email" name="sender_email" required></label><label class="form-label">Objet<input class="form-control" name="subject"></label><label class="form-label">Message<textarea class="form-control" name="body" rows="6" required></textarea></label><button class="btn btn-info mt-2">Envoyer le message</button></form></main>{% endblock %}
+{% extends "base.html" %}{% block title %}Contact — Portfolio{% endblock %} {%
+block content %}
+<main class="container section-space" style="max-width: 760px">
+  <p class="text-blue">CONTACT</p>
+  <h1>Échangeons sur votre projet</h1>
+  {% if sent %}
+  <div class="alert alert-success mt-4">
+    Votre message a bien été envoyé. Merci !
+  </div>
+  {% endif %}
+  <form method="post" class="card p-4 mt-4">
+    <label class="form-label"
+      >Nom<input
+        class="form-control"
+        name="sender_name"
+        required
+        minlength="2" /></label
+    ><label class="form-label"
+      >E-mail<input
+        class="form-control"
+        type="email"
+        name="sender_email"
+        required /></label
+    ><label class="form-label"
+      >Objet<input class="form-control" name="subject" /></label
+    ><label class="form-label"
+      >Message<textarea
+        class="form-control"
+        name="body"
+        rows="6"
+        required
+      ></textarea></label
+    ><button class="btn btn-info mt-2">Envoyer le message</button>
+  </form>
+</main>
+{% endblock %}
