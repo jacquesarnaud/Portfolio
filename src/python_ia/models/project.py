@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlmodel import Field, Relationship, SQLModel
 
 from python_ia.models.base import utc_now
@@ -35,7 +36,14 @@ class ProjectImage(SQLModel, table=True):
     __tablename__ = "project_images"
 
     id: int | None = Field(default=None, primary_key=True)
-    project_id: int = Field(foreign_key="projects.id", index=True)
+    project_id: int = Field(
+        sa_column=Column(
+            Integer,
+            ForeignKey("projects.id", ondelete="CASCADE"),
+            index=True,
+            nullable=False,
+        )
+    )
     image_url: str = Field(max_length=500)
     alt_text: str = Field(default="", max_length=200)
     display_order: int = Field(default=0)

@@ -1,174 +1,60 @@
 {% extends "base.html" %}
-{% block title %}{{ profile.full_name if profile else 'Portfolio professionnel' }}{% endblock %}
+{% block title %}{{ profile.full_name if profile else 'BJA — Développeur Python' }}{% endblock %}
 {% block content %}
 <main>
-  <section class="hero" style="background-image: linear-gradient(90deg, rgba(7, 17, 31, .96) 0%, rgba(7, 17, 31, .75) 48%, rgba(7, 17, 31, .2) 100%), url('{{ url_for('static', path='images/cover.jpg') }}');">
-    <div class="container hero-content">
-      <div class="row">
-        <div class="col-xl-8 col-lg-10">
-          <p class="eyebrow mb-3">DÉVELOPPEUR PYTHON · WEB</p>
-          <h1>À la recherche de nouveaux défis.</h1>
-          <p class="hero-lead">
-            {{ profile.full_name if profile and profile.full_name else 'Développeur Python & Web' }} — je souhaite rejoindre une équipe et contribuer à des projets utiles.
-          </p>
-          <p class="text-secondary col-lg-9 mb-0">
-            Je développe des applications web, des APIs et des outils métier avec Python, Django, FastAPI et SQL. Ouvert à une opportunité professionnelle et à certaines collaborations freelance.
-          </p>
+  <section class="hero-modern">
+    <div class="container position-relative">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">BOUA BI IRIE JACQUES ARNAUD · ABIDJAN</p>
+          <h1>Je transforme les idées en <span>solutions utiles.</span></h1>
+          <p class="hero-lead">Développeur Python spécialisé en backend, APIs et intelligence artificielle.</p>
+          <p class="hero-description">Je conçois des applications modernes, sécurisées et évolutives avec Python, FastAPI, Django et PostgreSQL.</p>
           <div class="d-flex flex-wrap gap-3 mt-4">
-            <a class="btn btn-info btn-lg" href="/projets">Voir mes projets</a>
-            {% if profile and profile.cv_url %}<a class="btn btn-outline-light btn-lg" href="{{ profile.cv_url }}" target="_blank" rel="noreferrer">Télécharger mon CV</a>{% else %}<a class="btn btn-outline-light btn-lg" href="/contact">Me contacter</a>{% endif %}
+            <a class="btn btn-gradient btn-lg" href="/projets">Découvrir mes projets <span>↗</span></a>
+            <a class="btn btn-ghost btn-lg" href="/contact">Parlons de votre idée</a>
           </div>
-          <div class="hero-trust mt-5">
-            <span>Python</span><span>Django</span><span>FastAPI</span><span>SQL</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="section-space">
-    <div class="container">
-      <div class="section-heading row g-4 align-items-end mb-5">
-        <div class="col-lg-7">
-          <p class="eyebrow">MON OBJECTIF</p>
-          <h2>Construire, apprendre et contribuer.</h2>
-        </div>
-        <div class="col-lg-5 text-secondary">
-          <p class="mb-0">Je recherche un poste de développeur Python, back-end ou full-stack dans une équipe collaborative, avec des projets concrets et l’envie de progresser.</p>
-        </div>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-3">
-          <article class="service-card h-100">
-            <span class="service-number">01</span>
-            <h3>Développement web</h3>
-            <p>Concevoir des plateformes, tableaux de bord et outils métier avec une architecture claire.</p>
-            <small>Python · FastAPI · Jinja · SQL</small>
-          </article>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <article class="service-card h-100">
-            <span class="service-number">02</span>
-            <h3>Back-end Python</h3>
-            <p>Développer des applications Django complètes ou des APIs rapides avec FastAPI.</p>
-            <small>Django · FastAPI · REST · SQL</small>
-          </article>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <article class="service-card h-100">
-            <span class="service-number">03</span>
-            <h3>Résolution de problèmes</h3>
-            <p>Analyser un besoin, comprendre un système et construire une solution simple et fiable.</p>
-            <small>Scripts · Données · Intégrations</small>
-          </article>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <article class="service-card h-100">
-            <span class="service-number">04</span>
-            <h3>Qualité & amélioration</h3>
-            <p>Corriger, tester et faire évoluer une application existante vers une base maintenable.</p>
-            <small>Audit · Qualité · Mise en production</small>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-space">
-    <div class="container">
-      <div class="row g-5 align-items-start">
-        <div class="col-lg-5">
-          <p class="eyebrow">CE QUE JE RECHERCHE</p>
-          <h2>Une équipe dans laquelle progresser.</h2>
-        </div>
-        <div class="col-lg-7">
-          <div class="row g-3">
-            <div class="col-sm-6"><div class="expectation-card">Un poste de développeur Python, back-end ou full-stack</div></div>
-            <div class="col-sm-6"><div class="expectation-card">Des projets concrets avec un impact réel</div></div>
-            <div class="col-sm-6"><div class="expectation-card">Une équipe collaborative et bienveillante</div></div>
-            <div class="col-sm-6"><div class="expectation-card">La possibilité d’apprendre et de progresser</div></div>
-          </div>
-          <div class="mt-4 d-flex flex-wrap gap-3">
-            <a href="/experiences">Voir mon parcours →</a>
-            <a href="/competences">Voir mes compétences →</a>
+          <div class="hero-stats">
+            <div><strong>Python</strong><small>technologie principale</small></div>
+            <div><strong>Backend</strong><small>cœur d'expertise</small></div>
+            <div><strong>IA</strong><small>nouveaux horizons</small></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" class="section-space section-dark">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-end gap-3 mb-5">
-        <div>
-          <p class="eyebrow">MES RÉALISATIONS</p>
-          <h2>Des projets concrets.</h2>
-        </div>
-        <a class="d-none d-md-inline-block" href="/projets">Voir tous les projets →</a>
-      </div>
-      <div class="row g-4">
-        {% for project in projects[:3] %}
-        <div class="col-md-6 col-lg-4">
-          <article class="card project-card p-0 overflow-hidden">
-            <img src="{{ project.cover_image_url or url_for('static', path='images/project' ~ ((loop.index - 1) % 2 + 1) ~ 'small.jpg') }}" class="project-card-image" alt="Illustration du projet {{ project.title }}" />
-            <div class="p-4">
-              <p class="text-blue small mb-2">{{ project.technologies or 'APPLICATION WEB' }}</p>
-              <h3 class="h4">{{ project.title }}</h3>
-              <p class="text-secondary">{{ project.short_description or project.description }}</p>
-              <a href="/projets/{{ project.slug }}">Voir le projet →</a>
-            </div>
-          </article>
-        </div>
-        {% else %}
-        <p class="text-secondary">Les projets seront bientôt disponibles.</p>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <section id="method" class="section-space">
-    <div class="container">
-      <div class="section-heading mb-5">
-          <p class="eyebrow">MA FAÇON DE TRAVAILLER</p>
-          <h2>Comprendre, construire, améliorer.</h2>
-          <p class="text-secondary col-lg-6">J’avance par étapes, je documente mes choix et je recherche régulièrement les retours de l’équipe et des utilisateurs.</p>
-      </div>
-      <div class="row g-0 process-list">
-        <div class="col-md"><div class="process-step"><span>01</span><h3>Comprendre</h3><p>Le besoin, le contexte et les priorités.</p></div></div>
-        <div class="col-md"><div class="process-step"><span>02</span><h3>Concevoir</h3><p>Une solution cohérente et évolutive.</p></div></div>
-        <div class="col-md"><div class="process-step"><span>03</span><h3>Développer</h3><p>Du code lisible et des fonctionnalités utiles.</p></div></div>
-        <div class="col-md"><div class="process-step"><span>04</span><h3>Tester</h3><p>Vérifier, corriger et sécuriser.</p></div></div>
-        <div class="col-md"><div class="process-step"><span>05</span><h3>Partager</h3><p>Documenter et améliorer en équipe.</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-space section-dark">
-    <div class="container">
-      <div class="row g-4 align-items-center">
-        <div class="col-lg-6">
-          <p class="eyebrow">POURQUOI MOI</p>
-          <h2>Ce que j’apporte à une équipe.</h2>
-        </div>
-        <div class="col-lg-6">
-          <div class="row g-3">
-            <div class="col-sm-6"><div class="promise-card"><strong>01</strong><span>Curiosité et capacité à apprendre rapidement</span></div></div>
-            <div class="col-sm-6"><div class="promise-card"><strong>02</strong><span>Rigueur dans le code et la documentation</span></div></div>
-            <div class="col-sm-6"><div class="promise-card"><strong>03</strong><span>Esprit de résolution de problèmes</span></div></div>
-            <div class="col-sm-6"><div class="promise-card"><strong>04</strong><span>Communication claire et envie de collaborer</span></div></div>
+        <div class="hero-visual">
+          <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
+          <div class="profile-card">
+            <div class="profile-card-top"><span class="status-dot"></span> Disponible pour de nouvelles opportunités</div>
+            <div class="profile-logo-wrap"><img src="{{ url_for('static', path='images/Logo BJA — Développeur Python.png') }}" alt="Logo de Boua Bi Irie Jacques Arnaud" /></div>
+            <p class="profile-code">&lt;developer /&gt;</p>
+            <h2>Boua Bi Irie<br /><span>Jacques Arnaud</span></h2>
+            <p>Backend · IA · APIs</p>
           </div>
+          <span class="floating-tag tag-python">🐍 Python</span><span class="floating-tag tag-api">⚡ FastAPI</span><span class="floating-tag tag-ai">✦ RAG / LLM</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="contact-cta section-space">
-    <div class="container text-center">
-      <p class="eyebrow">UNE OPPORTUNITÉ OU UNE COLLABORATION ?</p>
-      <h2>Échangeons.</h2>
-      <p class="text-secondary mx-auto">Je suis principalement à la recherche d’une opportunité professionnelle. Je reste également ouvert à certaines collaborations freelance.</p>
-      <a class="btn btn-info btn-lg mt-3" href="/contact">Me contacter</a>
+  <section id="expertise" class="section-space">
+    <div class="container">
+      <div class="section-intro"><div><p class="eyebrow">MON TERRAIN DE JEU</p><h2>Un profil technique,<br /><span>orienté impact.</span></h2></div><p>De la conception d'une API à l'intégration de l'intelligence artificielle, je construis des expériences numériques claires et fiables.</p></div>
+      <div class="row g-4 mt-4">
+        <div class="col-md-6 col-lg-3"><article class="expertise-card"><span class="card-index">01</span><div class="expertise-icon">⌘</div><h3>Backend Python</h3><p>Des fondations solides avec FastAPI, Django et Flask.</p></article></div>
+        <div class="col-md-6 col-lg-3"><article class="expertise-card"><span class="card-index">02</span><div class="expertise-icon">◈</div><h3>APIs & données</h3><p>Des services REST connectés à des bases fiables et bien pensées.</p></article></div>
+        <div class="col-md-6 col-lg-3"><article class="expertise-card"><span class="card-index">03</span><div class="expertise-icon">✦</div><h3>Intelligence artificielle</h3><p>RAG, LLM, embeddings et documents au service des usages.</p></article></div>
+        <div class="col-md-6 col-lg-3"><article class="expertise-card"><span class="card-index">04</span><div class="expertise-icon">⌁</div><h3>Systèmes & sécurité</h3><p>Une culture réseaux, Linux, Docker et cybersécurité.</p></article></div>
+      </div>
     </div>
   </section>
+
+  <section id="projects" class="section-space projects-section">
+    <div class="container"><div class="section-intro"><div><p class="eyebrow">CE QUE JE CONSTRUIS</p><h2>Des idées qui prennent<br /><span>une forme concrète.</span></h2></div><a class="arrow-link" href="/projets">Tous les projets <span>↗</span></a></div>
+      <div class="row g-4 mt-4">{% for project in projects[:3] %}<div class="col-md-6 col-lg-4"><article class="project-card-modern"><div class="project-image-wrap"><img src="{{ project.cover_image_url or url_for('static', path='images/project' ~ ((loop.index - 1) % 2 + 1) ~ '.jpg') }}" alt="{{ project.title }}" /><span class="project-number">0{{ loop.index }}</span></div><div class="project-body"><p class="project-tech">{{ project.technologies }}</p><h3>{{ project.title }}</h3><p>{{ project.short_description or project.description }}</p><a href="/projets/{{ project.slug }}">Explorer le projet <span>↗</span></a></div></article></div>{% else %}<p class="text-secondary">Les projets seront bientôt disponibles.</p>{% endfor %}</div>
+    </div>
+  </section>
+
+  <section id="vision" class="section-space vision-section"><div class="container"><div class="vision-panel"><div><p class="eyebrow">MA VISION</p><h2>Coder. Apprendre.<br /><span>Innover. Construire.</span></h2></div><div><p>Je crois que la technologie est un puissant moyen de résoudre des problèmes et de créer des opportunités. Mon ambition : devenir un développeur Python Backend confirmé et participer à la transformation numérique en Afrique.</p><a class="arrow-link" href="/a-propos">Découvrir mon parcours <span>↗</span></a></div></div></div></section>
+
+  <section class="contact-cta-modern section-space"><div class="container text-center"><p class="eyebrow">UNE IDÉE, UN PROJET, UNE OPPORTUNITÉ ?</p><h2>Construisons quelque chose<br /><span>de remarquable.</span></h2><a class="btn btn-gradient btn-lg mt-3" href="/contact">Entrer en contact <span>↗</span></a></div></section>
 </main>
 {% endblock %}

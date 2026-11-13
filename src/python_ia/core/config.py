@@ -30,6 +30,13 @@ class Settings(BaseSettings):
         # Nettoie les espaces accidentels souvent ajoutés lors d'un copier-coller.
         url = self.database_url.strip().replace("postgresql + async://", "postgresql+asyncpg://")
         url = url.replace("postgresql+async://", "postgresql+asyncpg://")
+
+        # Les URLs SQLite utilisent trois slash après le schéma. Les traiter
+        # avec urlsplit/urlunsplit les réduirait à un seul slash et rendrait
+        # l'URL invalide (notamment pour la valeur par défaut locale).
+        if url.startswith("sqlite"):
+            return url
+
         if url.startswith("postgresql://"):
             url = "postgresql+asyncpg://" + url.removeprefix("postgresql://")
         elif url.startswith("postgres://"):

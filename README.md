@@ -21,12 +21,14 @@ migrations/      # versions Alembic
 ```bash
 cp .env.example .env
 uv sync
+uv run alembic upgrade head
 uv run python-ia
 ```
 
 `DATABASE_URL` doit pointer vers Neon en production. La valeur par défaut
-utilise SQLite asynchrone afin de démarrer l'ossature sans service externe ;
-elle ne remplace pas PostgreSQL dans l'environnement cible.
+utilise SQLite asynchrone afin de démarrer l'application sans service externe ;
+la migration Alembic doit être appliquée avant le premier démarrage. SQLite ne
+remplace pas PostgreSQL dans l'environnement cible.
 
 ## Démarrage avec Docker
 

@@ -36,7 +36,11 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
+    # SQLModel représente les chaînes sans longueur explicite avec
+    # ``AutoString`` alors que la migration historique les a créées en TEXT.
+    # Ces deux types sont équivalents pour ce projet ; ne pas générer de
+    # migrations artificielles à chaque appel d'autogénération.
+    context.configure(connection=connection, target_metadata=target_metadata, compare_type=False)
     with context.begin_transaction():
         context.run_migrations()
 

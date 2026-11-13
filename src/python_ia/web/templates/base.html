@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Portfolio professionnel{% endblock %}</title>
+    <title>{% block title %}BJA — Développeur Python{% endblock %}</title>
+    <meta name="description" content="Portfolio de Boua Bi Irie Jacques Arnaud, développeur Python spécialisé en backend et intelligence artificielle." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,6 +21,12 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
       href="{{ url_for('static', path='css/site.css') }}"
     />
   </head>
@@ -28,9 +35,10 @@
       class="navbar navbar-expand-lg border-bottom border-secondary sticky-top"
     >
       <div class="container">
-        <a class="navbar-brand fw-bold" href="/"
-          >Portfolio<span class="text-blue">.</span></a
-        >
+        <a class="navbar-brand brand-mark fw-bold" href="/">
+          <img src="{{ url_for('static', path='images/Logo BJA — Développeur Python.png') }}" alt="Logo BJA" />
+          <span>BJA<span class="text-blue">.</span></span>
+        </a>
         <button
           class="navbar-toggler"
           data-bs-toggle="collapse"
@@ -40,9 +48,9 @@
         </button>
         <div id="nav" class="collapse navbar-collapse">
           <div class="navbar-nav ms-auto gap-3 align-items-lg-center">
-            <a class="nav-link" href="/#services">Services</a
+            <a class="nav-link" href="/#expertise">Expertise</a
             ><a class="nav-link" href="/projets">Projets</a
-            ><a class="nav-link" href="/#method">Méthode</a
+            ><a class="nav-link" href="/#vision">Vision</a
             ><a class="nav-link" href="/a-propos">À propos</a
             ><a class="nav-link" href="/experiences">Expériences</a
             ><a class="nav-link" href="/formations">Formation</a
@@ -55,7 +63,7 @@
     <footer class="border-top border-secondary py-4 mt-5">
       <div class="container text-secondary small">
         <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-          <span>© Portfolio professionnel</span>
+          <span>© {{ profile.full_name if profile else 'BJA' }} · Coder. Apprendre. Innover.</span>
           <a class="small text-secondary" href="/admin/login">Espace administration</a>
         </div>
       </div>
