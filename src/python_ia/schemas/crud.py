@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 def validate_http_url(value: str) -> str:
-    if value and urlsplit(value).scheme not in {"http", "https"}:
+    if value and not value.startswith("/") and urlsplit(value).scheme not in {"http", "https"}:
         raise ValueError("L'URL doit utiliser http ou https")
     return value
 
