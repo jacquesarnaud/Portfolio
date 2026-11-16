@@ -55,7 +55,17 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    loaded = Settings()
+    if not loaded.debug and (
+        loaded.secret_key == "change-me-in-production"
+        or loaded.jwt_secret_key == "change-jwt-secret-in-production"
+        or loaded.admin_password in {"change-me", "change-me-immediately"}
+    ):
+        raise ValueError(
+            "Les secrets et le mot de passe administrateur doivent être configurés "
+            "avant de lancer l'application hors mode debug."
+        )
+    return loaded
 
 
 settings = get_settings()

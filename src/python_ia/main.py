@@ -2,7 +2,7 @@
 
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 
 from python_ia.api.router import router
@@ -23,6 +23,18 @@ async def lifespan(_: FastAPI):
 def create_app() -> FastAPI:
     """Construit l'application afin de faciliter les tests et le déploiement."""
     application = FastAPI(title=settings.app_name, debug=settings.debug, lifespan=lifespan)
+
+    @application.middleware("http")
+    async def security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("X-Frame-Options", "DENY")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+        if not settings.debug:
+            response.headers.setdefault("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+        return response
+
     application.mount("/static", StaticFiles(directory=Path(__file__).parent / "web" / "static"), name="static")
     application.include_router(router)
     application.include_router(web_router)

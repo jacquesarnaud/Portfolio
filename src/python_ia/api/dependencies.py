@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 
 from python_ia.database.database import DbSession
@@ -13,10 +13,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=F
 
 
 async def get_current_admin(
+    request: Request,
     session: DbSession,
     token: str | None = Depends(oauth2_scheme),
 ) -> str:
     """Retourne l'administrateur authentifié ou refuse l'accès."""
+    token = token or request.cookies.get("portfolio_admin_token")
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

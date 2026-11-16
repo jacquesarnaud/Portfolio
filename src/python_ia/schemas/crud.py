@@ -1,8 +1,15 @@
 """Schémas d'entrée et de sortie des API CRUD."""
 
 from datetime import date, datetime
+from urllib.parse import urlsplit
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+
+def validate_http_url(value: str) -> str:
+    if value and urlsplit(value).scheme not in {"http", "https"}:
+        raise ValueError("L'URL doit utiliser http ou https")
+    return value
 
 
 class SchemaBase(BaseModel):
@@ -12,7 +19,7 @@ class SchemaBase(BaseModel):
 class ProfileUpdate(SchemaBase):
     full_name: str = Field(max_length=150)
     headline: str = Field(max_length=200)
-    biography: str
+    biography: str = Field(max_length=10000)
     email: str = Field(default="", max_length=255)
     phone: str = Field(default="", max_length=50)
     location: str = Field(default="", max_length=150)
@@ -22,6 +29,8 @@ class ProfileUpdate(SchemaBase):
     linkedin_url: str = Field(default="", max_length=500)
     website_url: str = Field(default="", max_length=500)
     is_published: bool = True
+
+    _validate_urls = field_validator("avatar_url", "cv_url", "github_url", "linkedin_url", "website_url")(validate_http_url)
 
 
 class ProfileRead(ProfileUpdate):
@@ -45,7 +54,7 @@ class ProjectCreate(SchemaBase):
     title: str = Field(max_length=180)
     slug: str = Field(max_length=200)
     short_description: str = Field(default="", max_length=500)
-    description: str = ""
+    description: str = Field(default="", max_length=10000)
     technologies: str = Field(default="", max_length=500)
     repository_url: str = Field(default="", max_length=500)
     live_url: str = Field(default="", max_length=500)
@@ -53,6 +62,8 @@ class ProjectCreate(SchemaBase):
     display_order: int = 0
     is_featured: bool = False
     is_published: bool = True
+
+    _validate_urls = field_validator("repository_url", "live_url", "cover_image_url")(validate_http_url)
 
 
 class ProjectRead(ProjectCreate):
@@ -66,6 +77,8 @@ class ProjectImageCreate(SchemaBase):
     alt_text: str = Field(default="", max_length=200)
     display_order: int = 0
 
+    _validate_url = field_validator("image_url")(validate_http_url)
+
 
 class ProjectImageRead(ProjectImageCreate):
     id: int
@@ -76,7 +89,7 @@ class ExperienceCreate(SchemaBase):
     company: str = Field(max_length=180)
     position: str = Field(max_length=180)
     location: str = Field(default="", max_length=150)
-    description: str = ""
+    description: str = Field(default="", max_length=10000)
     start_date: date
     end_date: date | None = None
     is_current: bool = False
@@ -91,13 +104,15 @@ class ExperienceRead(ExperienceCreate):
 class EducationCreate(SchemaBase):
     institution: str = Field(max_length=180)
     title: str = Field(max_length=180)
-    description: str = ""
+    description: str = Field(default="", max_length=5000)
     start_date: date | None = None
     end_date: date | None = None
     credential_url: str = Field(default="", max_length=500)
     is_certification: bool = False
     display_order: int = 0
     is_published: bool = True
+
+    _validate_url = field_validator("credential_url")(validate_http_url)
 
 
 class EducationRead(EducationCreate):
@@ -106,9 +121,9 @@ class EducationRead(EducationCreate):
 
 class ContactMessageCreate(SchemaBase):
     sender_name: str = Field(min_length=2, max_length=150)
-    sender_email: str = Field(max_length=255)
+    sender_email: str = Field(max_length=255, pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
     subject: str = Field(default="", max_length=200)
-    body: str = Field(min_length=1)
+    body: str = Field(min_length=1, max_length=5000)
 
 
 class ContactMessageRead(ContactMessageCreate):

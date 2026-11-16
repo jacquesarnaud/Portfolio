@@ -4,7 +4,10 @@ Ce module se limite à la couche HTTP. La logique métier et les transactions
 sont déléguées à ``services.portfolio``.
 """
 
-from fastapi import APIRouter, HTTPException, status
+import time
+from collections import defaultdict
+
+from fastapi import APIRouter, HTTPException, Request, status
 
 from python_ia.api.dependencies import CurrentAdmin
 from python_ia.database.database import DbSession
@@ -36,6 +39,9 @@ from python_ia.schemas.crud import (
 from python_ia.services import portfolio
 
 router = APIRouter(prefix="/api/v1", tags=["portfolio"])
+_contact_submissions: dict[str, list[float]] = defaultdict(list)
+_CONTACT_WINDOW_SECONDS = 10 * 60
+_MAX_CONTACT_SUBMISSIONS = 5
 
 
 @router.get("/profile", response_model=ProfileRead)
@@ -200,8 +206,15 @@ async def delete_education(education_id: int, session: DbSession, _: CurrentAdmi
 
 
 @router.post("/contact", response_model=ContactMessageRead, status_code=status.HTTP_201_CREATED)
-async def create_contact_message(payload: ContactMessageCreate, session: DbSession) -> ContactMessage:
+async def create_contact_message(request: Request, payload: ContactMessageCreate, session: DbSession) -> ContactMessage:
     """Enregistre un message de contact."""
+    address = request.client.host if request.client else "unknown"
+    now = time.monotonic()
+    recent = [timestamp for timestamp in _contact_submissions[address] if now - timestamp < _CONTACT_WINDOW_SECONDS]
+    _contact_submissions[address] = recent
+    if len(recent) >= _MAX_CONTACT_SUBMISSIONS:
+        raise HTTPException(status_code=429, detail="Trop de messages. Réessayez plus tard.")
+    _contact_submissions[address].append(now)
     return await portfolio.create_contact_message(session, payload)
 
 

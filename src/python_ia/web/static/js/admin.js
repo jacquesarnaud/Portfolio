@@ -1,17 +1,16 @@
-const tokenKey = "portfolio_admin_token";
-
 function token() {
-  return localStorage.getItem(tokenKey);
+  return null;
 }
 
 function authHeaders(json = true) {
-  const headers = { Authorization: `Bearer ${token()}` };
+  const headers = {};
+  if (token()) headers.Authorization = `Bearer ${token()}`;
   if (json) headers["Content-Type"] = "application/json";
   return headers;
 }
 
 function requireToken() {
-  if (!token()) window.location.href = "/admin/login";
+  // La page est déjà protégée côté serveur par le cookie HttpOnly.
 }
 
 async function api(path, options = {}) {
@@ -20,7 +19,6 @@ async function api(path, options = {}) {
     headers: { ...authHeaders(options.body !== undefined), ...(options.headers || {}) },
   });
   if (response.status === 401) {
-    localStorage.removeItem(tokenKey);
     window.location.href = "/admin/login";
   }
   return response;
@@ -140,8 +138,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await submitForm("skill-form", "/skills", ["is_published"], "Compétence ajoutée.", loadSkills);
   await submitForm("education-form", "/educations", ["is_certification", "is_published"], "Formation ajoutée.", loadEducations);
   await submitForm("experience-form", "/experiences", ["is_current", "is_published"], "Expérience ajoutée.", loadExperiences);
-  document.querySelector("#logout").onclick = () => {
-    localStorage.removeItem(tokenKey);
+  document.querySelector("#logout").onclick = async () => {
+    await fetch("/api/v1/auth/logout", { method: "POST", credentials: "same-origin" });
     window.location.href = "/admin/login";
   };
 });

@@ -29,17 +29,14 @@
     const r = await fetch("/api/v1/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
       body: JSON.stringify(data),
     });
     if (r.ok) {
-      localStorage.setItem(
-        "portfolio_admin_token",
-        (await r.json()).access_token,
-      );
       location.href = "/admin";
     } else {
       document.querySelector("#login-error").textContent =
-        "Identifiants invalides";
+        "Identifiants invalides ou trop de tentatives";
       document.querySelector("#login-error").classList.remove("d-none");
     }
   };

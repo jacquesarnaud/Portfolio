@@ -12,9 +12,9 @@ router = APIRouter(prefix="/api/v1/public", tags=["public"])
 
 @router.get("/profile", response_model=ProfileRead | None)
 async def read_public_profile(session: DbSession) -> Profile | None:
-    return await portfolio.find_profile(session)
+    return await portfolio.find_profile(session, published_only=True)
 
 
 @router.get("/projects", response_model=list[ProjectRead])
 async def read_public_projects(session: DbSession) -> list[Project]:
-    return await portfolio.list_projects(session)
+    return await portfolio.list_projects(session, published_only=True)

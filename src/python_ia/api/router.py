@@ -5,6 +5,7 @@ from sqlalchemy import text
 
 from python_ia.api.auth import router as auth_router
 from python_ia.api.crud import router as crud_router
+from python_ia.api.dependencies import CurrentAdmin
 from python_ia.api.public import router as public_router
 from python_ia.database.database import DbSession
 
@@ -23,6 +24,7 @@ async def health_check() -> dict[str, str]:
 @router.get("/health/database", tags=["système"])
 async def database_health_check(
     session: DbSession,
+    _: CurrentAdmin,
 ) -> dict[str, str]:
     """Vérifie que l'application peut atteindre la base Neon."""
     await session.execute(text("SELECT 1"))
