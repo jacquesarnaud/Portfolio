@@ -122,6 +122,38 @@ async function loadExperiences() {
   `).join("") || "<p class='text-secondary mb-0'>Aucune expérience.</p>";
 }
 
+async function loadMessages() {
+  const response = await api("/contact");
+  if (!response.ok) return;
+  const messages = await response.json();
+  document.querySelector("#messages-list").innerHTML = messages.map((message) => `
+    <article class="admin-list-item d-block ${message.is_read ? "" : "border border-info"}">
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+        <div>
+          <strong>${escapeHtml(message.subject || "Sans objet")}</strong>
+          <small class="d-block">${escapeHtml(message.sender_name)} · <a href="mailto:${escapeHtml(message.sender_email)}">${escapeHtml(message.sender_email)}</a></small>
+          <small class="d-block text-secondary">${escapeHtml(new Date(message.created_at).toLocaleString("fr-FR"))}</small>
+        </div>
+        <div class="d-flex gap-2">
+          ${message.is_read ? "" : `<button class="btn btn-sm btn-outline-info" onclick="markMessageRead(${message.id})">Marquer comme lu</button>`}
+          <button class="btn btn-sm btn-outline-danger" onclick="removeItem('/contact/${message.id}', loadMessages)">Supprimer</button>
+        </div>
+      </div>
+      <p class="mb-0 mt-3 text-secondary">${escapeHtml(message.body)}</p>
+    </article>
+  `).join("") || "<p class='text-secondary mb-0'>Aucun message reçu.</p>";
+}
+
+async function markMessageRead(messageId) {
+  const response = await api(`/contact/${messageId}/read`, { method: "PATCH" });
+  if (response.ok) {
+    showMessage("Message marqué comme lu.");
+    await loadMessages();
+  } else {
+    showMessage("Impossible de mettre à jour le message.", "danger");
+  }
+}
+
 async function removeItem(path, callback) {
   if (!confirm("Supprimer cet élément ?")) return;
   const response = await api(path, { method: "DELETE" });
@@ -132,7 +164,7 @@ async function removeItem(path, callback) {
 document.addEventListener("DOMContentLoaded", async () => {
   if (!document.querySelector("#admin-dashboard")) return;
   requireToken();
-  await Promise.all([loadProfile(), loadSkills(), loadProjects(), loadEducations(), loadExperiences()]);
+  await Promise.all([loadProfile(), loadSkills(), loadProjects(), loadEducations(), loadExperiences(), loadMessages()]);
   await saveProfile();
   await submitForm("project-form", "/projects", ["is_featured", "is_published"], "Projet ajouté.", loadProjects);
   await submitForm("skill-form", "/skills", ["is_published"], "Compétence ajoutée.", loadSkills);

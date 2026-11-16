@@ -112,6 +112,17 @@
       <div class="card p-4"><h2 class="h4">Expériences existantes</h2><div id="experiences-list" class="admin-list"></div></div>
     </section>
   </div>
+
+  <section class="card p-4 mt-4">
+    <div class="admin-section-title">
+      <div>
+        <p class="text-blue mb-1">BOÎTE DE RÉCEPTION</p>
+        <h2 class="h4 mb-0">Messages reçus</h2>
+      </div>
+      <span class="text-secondary small">Les messages envoyés depuis la page Contact</span>
+    </div>
+    <div id="messages-list" class="admin-list mt-3"></div>
+  </section>
 </main>
 {% endblock %}
 {% block scripts %}<script src="{{ url_for('static', path='js/admin.js') }}"></script>{% endblock %}

@@ -222,3 +222,28 @@ async def create_contact_message(request: Request, payload: ContactMessageCreate
 async def list_contact_messages(session: DbSession, _: CurrentAdmin) -> list[ContactMessage]:
     """Retourne les messages reçus."""
     return await portfolio.list_contact_messages(session)
+
+
+@router.patch("/contact/{message_id}/read", response_model=ContactMessageRead)
+async def mark_contact_message_read(
+    message_id: int,
+    session: DbSession,
+    _: CurrentAdmin,
+) -> ContactMessage:
+    """Marque un message comme lu."""
+    message = await session.get(ContactMessage, message_id)
+    if message is None:
+        raise HTTPException(404, "Message introuvable")
+    message.is_read = True
+    await session.commit()
+    await session.refresh(message)
+    return message
+
+
+@router.delete("/contact/{message_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_contact_message(message_id: int, session: DbSession, _: CurrentAdmin) -> None:
+    """Supprime un message reçu."""
+    message = await session.get(ContactMessage, message_id)
+    if message is None:
+        raise HTTPException(404, "Message introuvable")
+    await portfolio.delete_item(session, message)
