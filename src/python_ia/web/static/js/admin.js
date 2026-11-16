@@ -16,6 +16,7 @@ function requireToken() {
 async function api(path, options = {}) {
   const response = await fetch(`/api/v1${path}`, {
     ...options,
+    credentials: "same-origin",
     headers: { ...authHeaders(options.body !== undefined), ...(options.headers || {}) },
   });
   if (response.status === 401) {
@@ -124,9 +125,13 @@ async function loadExperiences() {
 
 async function loadMessages() {
   const response = await api("/contact");
-  if (!response.ok) return;
+  const list = document.querySelector("#messages-list");
+  if (!response.ok) {
+    list.innerHTML = "<p class='text-danger mb-0'>Impossible de charger les messages. Vérifiez votre connexion administrateur.</p>";
+    return;
+  }
   const messages = await response.json();
-  document.querySelector("#messages-list").innerHTML = messages.map((message) => `
+  list.innerHTML = messages.map((message) => `
     <article class="admin-list-item d-block ${message.is_read ? "" : "border border-info"}">
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
         <div>
