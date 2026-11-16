@@ -124,7 +124,26 @@
         <button class="btn btn-sm btn-outline-info" type="button" onclick="loadMessages()">Actualiser</button>
       </div>
     </div>
-    <div id="messages-list" class="admin-list mt-3"></div>
+    <div id="messages-list" class="admin-list mt-3">
+      {% for message in messages %}
+      <article class="admin-list-item d-block {% if not message.is_read %}border border-info{% endif %}">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+          <div>
+            <strong>{{ message.subject or 'Sans objet' }}</strong>
+            <small class="d-block">{{ message.sender_name }} · <a href="mailto:{{ message.sender_email }}">{{ message.sender_email }}</a></small>
+            <small class="d-block text-secondary">{{ message.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+          </div>
+          <div class="d-flex gap-2">
+            {% if not message.is_read %}<button class="btn btn-sm btn-outline-info" onclick="markMessageRead({{ message.id }})">Marquer comme lu</button>{% endif %}
+            <button class="btn btn-sm btn-outline-danger" onclick="removeItem('/contact/{{ message.id }}', loadMessages)">Supprimer</button>
+          </div>
+        </div>
+        <p class="mb-0 mt-3 text-secondary">{{ message.body }}</p>
+      </article>
+      {% else %}
+      <p class="text-secondary mb-0">Aucun message reçu.</p>
+      {% endfor %}
+    </div>
   </section>
 </main>
 {% endblock %}

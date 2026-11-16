@@ -110,5 +110,15 @@ async def admin_dashboard(request: Request, session: DbSession, _: CurrentAdmin)
     return templates.TemplateResponse(
         request,
         "admin/dashboard.html",
-        {"stats": {"projects": len(projects), "skills": len(skills), "experiences": len(experiences), "educations": len(educations), "messages": len(messages), "unread": sum(not item.is_read for item in messages)}},
+        {
+            "stats": {
+                "projects": len(projects),
+                "skills": len(skills),
+                "experiences": len(experiences),
+                "educations": len(educations),
+                "messages": len(messages),
+                "unread": sum(not item.is_read for item in messages),
+            },
+            "messages": messages,
+        },
     )
