@@ -67,6 +67,21 @@ async def education(request: Request, session: DbSession):
     return templates.TemplateResponse(request, "education.html", {"educations": await portfolio.list_educations(session, published_only=True)})
 
 
+@router.get("/cv", response_class=HTMLResponse)
+async def cv(request: Request, session: DbSession):
+    """Affiche le CV, optimisé pour l'impression au format A4."""
+    return templates.TemplateResponse(
+        request,
+        "cv.html",
+        {
+            "profile": await portfolio.find_profile(session, published_only=True),
+            "skills": await portfolio.list_skills(session, published_only=True),
+            "experiences": await portfolio.list_experiences(session, published_only=True),
+            "educations": await portfolio.list_educations(session, published_only=True),
+        },
+    )
+
+
 @router.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse(request, "contact.html", {"sent": False})

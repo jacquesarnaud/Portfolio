@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}CV — {{ profile.full_name if profile else 'BJA' }}{% endblock %}
+{% block content %}
+<main class="cv-shell">
+  <div class="cv-actions container d-flex justify-content-end gap-2 py-3">
+    <a class="btn btn-ghost" href="/">Retour au portfolio</a>
+    <button class="btn btn-gradient" type="button" onclick="window.print()">
+      <i class="fa-solid fa-print me-2" aria-hidden="true"></i>Imprimer / PDF
+    </button>
+  </div>
+
+  <article class="cv-page">
+    <header class="cv-header">
+      <div>
+        <p class="cv-kicker">CURRICULUM VITAE</p>
+        <h1>{{ profile.full_name if profile else 'Boua Bi Irie Jacques Arnaud' }}</h1>
+        <p class="cv-headline">{{ profile.headline if profile else 'Développeur Python · Backend & Intelligence artificielle' }}</p>
+        {% if profile and profile.biography %}<p class="cv-summary">{{ profile.biography }}</p>{% endif %}
+      </div>
+      <img class="cv-photo" src="{{ url_for('static', path='images/profil.jpg') }}" alt="Photo de {{ profile.full_name if profile else 'profil' }}" />
+    </header>
+
+    <div class="cv-contact">
+      {% if profile and profile.location %}<span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ profile.location }}</span>{% endif %}
+      {% if profile and profile.phone %}<span><i class="fa-solid fa-phone" aria-hidden="true"></i>{{ profile.phone }}</span>{% endif %}
+      {% if profile and profile.email %}<span><i class="fa-solid fa-envelope" aria-hidden="true"></i>{{ profile.email }}</span>{% endif %}
+      {% if profile and profile.github_url %}<span><i class="fa-brands fa-github" aria-hidden="true"></i>{{ profile.github_url }}</span>{% endif %}
+      {% if profile and profile.linkedin_url %}<span><i class="fa-brands fa-linkedin" aria-hidden="true"></i>{{ profile.linkedin_url }}</span>{% endif %}
+    </div>
+
+    <div class="cv-grid">
+      <section class="cv-main-column">
+        <div class="cv-section">
+          <h2>Expérience professionnelle</h2>
+          <article class="cv-entry">
+            <div class="cv-entry-date">Avril 2025 — Octobre 2025</div>
+            <h3>Stage école</h3>
+            <p class="cv-entry-place">Orange Côte d’Ivoire</p>
+          </article>
+        </div>
+
+        <div class="cv-section">
+          <h2>Formation & certifications</h2>
+          {% for item in educations %}
+          <article class="cv-entry">
+            {% if item.title != 'Certification en E-banking' %}<div class="cv-entry-date">{% if item.title == 'Licence en Informatique et Sciences du Numérique — Réseaux et Sécurité Informatique' %}Septembre 2022 — Août 2026{% elif item.title == 'Formation Développeur Python — Intelligence Artificielle' or item.title == 'Développeur web & Intelligence Artificielle en Python' %}Février 2026 — Novembre 2026{% else %}{% if item.start_date %}{{ item.start_date.strftime('%m/%Y') }}{% endif %}{% if item.end_date %} — {{ item.end_date.strftime('%m/%Y') }}{% endif %}{% endif %}</div>{% endif %}
+            <h3>{% if item.title == 'Formation Développeur Python — Intelligence Artificielle' %}Certification professionnelle — Développeur web &amp; Intelligence Artificielle en Python{% elif item.title == 'Développeur web & Intelligence Artificielle en Python' %}Certification professionnelle — {{ item.title }}{% else %}{{ item.title }}{% endif %}</h3>
+            <p class="cv-entry-place">{% if item.title == 'Certification en E-banking' %}Université Virtuelle de Côte d’Ivoire (UVCI){% else %}{{ item.institution }}{% endif %}{% if item.is_certification %} · Certification{% endif %}</p>
+            {% if item.description %}<p>{% if item.title == 'Formation Développeur Python — Intelligence Artificielle' or item.title == 'Développeur web & Intelligence Artificielle en Python' %}Certification professionnelle en développement web et intelligence artificielle en Python.{% elif item.title == 'Certification en E-banking' %}Certification professionnelle en E-banking.{% else %}{{ item.description }}{% endif %}</p>{% endif %}
+          </article>
+          {% else %}<p class="cv-muted">Les formations seront bientôt disponibles.</p>{% endfor %}
+        </div>
+      </section>
+
+      <aside class="cv-sidebar">
+        <section class="cv-section">
+          <h2>Compétences techniques</h2>
+          <div class="cv-technical-list">
+            <span>Python</span>
+            <span>FastAPI · Django · Flask</span>
+            <span>API REST · WebSocket</span>
+            <span>PostgreSQL · SQLite</span>
+            <span>SQLAlchemy · Alembic</span>
+            <span>RAG · LLM · Embeddings</span>
+            <span>Git · GitHub · Docker</span>
+            <span>Linux · Cybersécurité</span>
+          </div>
+        </section>
+
+        <section class="cv-section">
+          <h2>Atouts</h2>
+          <div class="cv-strengths-list">
+            <span>Esprit d’équipe</span>
+            <span>Adaptabilité</span>
+            <span>Autonomie</span>
+            <span>Esprit d’analyse</span>
+            <span>Sens de l’organisation</span>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+  </article>
+</main>
+{% endblock %}

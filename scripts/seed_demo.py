@@ -147,12 +147,12 @@ async def seed() -> None:
         ))
         session.add(Education(
             institution="Nan Académique",
-            title="Formation Développeur Python — Intelligence Artificielle",
-            description="Formation en développement Python et intelligence artificielle, du 2 février au 16 novembre 2026.",
-            start_date=date(2026, 2, 2), end_date=date(2026, 11, 16), display_order=2,
+            title="Développeur web & Intelligence Artificielle en Python",
+            description="Certification professionnelle en développement web et intelligence artificielle en Python.",
+            start_date=date(2026, 2, 2), end_date=date(2026, 11, 16), is_certification=True, display_order=2,
         ))
         session.add(Education(
-            institution="Certification professionnelle",
+            institution="Université Virtuelle de Côte d’Ivoire (UVCI)",
             title="Certification en E-banking",
             description="Certification obtenue en 2026.",
             start_date=date(2026, 1, 1), end_date=date(2026, 1, 1), is_certification=True, display_order=3,
